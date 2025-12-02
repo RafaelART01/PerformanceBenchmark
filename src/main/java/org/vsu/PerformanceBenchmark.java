@@ -41,7 +41,7 @@ public class PerformanceBenchmark {
         return results;
     }
 
-    private List<Integer> createPopulatedList(String type) {
+    public List<Integer> createPopulatedList(String type) {
         List<Integer> list = "ArrayList".equals(type)
                 ? new ArrayList<Integer>()
                 : new LinkedList<Integer>();
@@ -51,13 +51,13 @@ public class PerformanceBenchmark {
         return list;
     }
 
-    private List<Integer> createEmptyList(String type) {
+    public List<Integer> createEmptyList(String type) {
         return "ArrayList".equals(type)
                 ? new ArrayList<Integer>()
                 : new LinkedList<Integer>();
     }
 
-    private Result benchmarkAddLast(String listType) {
+    public Result benchmarkAddLast(String listType) {
         List<Integer> list = createEmptyList(listType);
         warmup(() -> list.add(0));
         long start = System.nanoTime();
@@ -68,7 +68,7 @@ public class PerformanceBenchmark {
         return new Result(listType, "addLast", ITERATIONS, end - start);
     }
 
-    private Result benchmarkAddFirst(String listType) {
+    public Result benchmarkAddFirst(String listType) {
         List<Integer> list = createEmptyList(listType);
         warmup(() -> list.addFirst(0));
         long start = System.nanoTime();
@@ -79,7 +79,7 @@ public class PerformanceBenchmark {
         return new Result(listType, "addFirst", ITERATIONS, end - start);
     }
 
-    private Result benchmarkGet(String listType) {
+    public Result benchmarkGet(String listType) {
         List<Integer> list = createPopulatedList(listType);
         int size = list.size();
         warmup(() -> list.getFirst());
@@ -91,7 +91,7 @@ public class PerformanceBenchmark {
         return new Result(listType, "get", ITERATIONS, end - start);
     }
 
-    private Result benchmarkIndexOf(String listType) {
+    public Result benchmarkIndexOf(String listType) {
         List<Integer> list = createPopulatedList(listType);
         int[] targets = new int[ITERATIONS];
         for (int i = 0; i < ITERATIONS; i++) {
@@ -106,7 +106,7 @@ public class PerformanceBenchmark {
         return new Result(listType, "indexOf", ITERATIONS, end - start);
     }
 
-    private Result benchmarkRemoveByValue(String listType) {
+    public Result benchmarkRemoveByValue(String listType) {
         List<Integer> list = createPopulatedList(listType);
         List<Integer> toRemove = new ArrayList<>();
         for (int i = 0; i < ITERATIONS && i < LIST_SIZE; i++) {
@@ -122,7 +122,7 @@ public class PerformanceBenchmark {
         return new Result(listType, "remove(value)", toRemove.size(), end - start);
     }
 
-    private Result benchmarkDeleteLast(String listType) {
+    public Result benchmarkDeleteLast(String listType) {
         List<Integer> list = createPopulatedList(listType);
         warmup(() -> {
             if (!list.isEmpty()) list.removeLast();
@@ -176,10 +176,10 @@ public class PerformanceBenchmark {
             String winner;
             if (alMs < llMs && llMs > 0) {
                 double ratio = llMs / alMs;
-                winner = String.format("ArrayList (×%.1f)", ratio);
+                winner = String.format("ArrayList (x%.1f)", ratio);
             } else if (llMs < alMs && alMs > 0) {
                 double ratio = alMs / llMs;
-                winner = String.format("LinkedList (×%.1f)", ratio);
+                winner = String.format("LinkedList (x%.1f)", ratio);
             } else {
                 winner = "equal";
             }
